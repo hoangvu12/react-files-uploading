@@ -1,63 +1,73 @@
 import * as React from 'react';
-import ImageUploading from '../src';
+import FileUploading from '../src';
 
 export const App = () => {
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 69;
+  const [files, setFiles] = React.useState<File[]>([]);
 
-  const onChange = (imageList) => {
-    // data for submit
-    setImages(imageList);
+  const onChange = (videoList: File[]) => {
+    setFiles(videoList);
   };
 
   return (
     <div className="App">
-      <ImageUploading
-        multiple
-        value={images}
-        onChange={onChange}
-        maxNumber={maxNumber}
-        dataURLKey="data_url"
-      >
+      <FileUploading multiple value={files} maxNumber={10} onChange={onChange}>
         {({
-          imageList,
-          onImageUpload,
-          onImageRemoveAll,
-          onImageUpdate,
-          onImageRemove,
+          fileList,
+          errors,
           isDragging,
+          onFileUpload,
+          onFileRemoveAll,
+          onFileUpdate,
+          onFileRemove,
           dragProps,
-        }) => (
-          // write your building UI
-          <div className="upload__image-wrapper">
-            <button
-              type="button"
-              style={isDragging ? { color: 'red' } : undefined}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-              Click or Drop here
-            </button>
-            &nbsp;
-            <button type="button" onClick={onImageRemoveAll}>
-              Remove all images
-            </button>
-            {imageList.map((image, index) => (
-              <div key={`image-${index}`} className="image-item">
-                <img src={image.data_url} alt="" width="100" />
-                <div className="image-item__btn-wrapper">
-                  <button type="button" onClick={() => onImageUpdate(index)}>
-                    Update
-                  </button>
-                  <button type="button" onClick={() => onImageRemove(index)}>
-                    Remove
-                  </button>
-                </div>
+        }) => {
+          return (
+            <div className="upload__file-wrapper">
+              {errors && errors.maxNumber && (
+                <span>Number of selected videos exceed maxNumber</span>
+              )}
+
+              <button
+                id="btn-upload"
+                type="button"
+                style={isDragging ? { color: 'red' } : undefined}
+                onClick={onFileUpload}
+                {...dragProps}
+              >
+                Click or Drop here
+              </button>
+
+              <button id="btn-remove" type="button" onClick={onFileRemoveAll}>
+                Remove all videos
+              </button>
+
+              <div id="list-videos">
+                {fileList.map((file, index) => (
+                  <div key={`file-${index}`} className="file-item">
+                    <p>{file.name}</p>
+                    <div className="file-item__btn-wrapper">
+                      <button
+                        id={`update_${index}`}
+                        type="button"
+                        onClick={() => onFileUpdate(index)}
+                      >
+                        {`Update ${index}`}
+                      </button>
+                      <button
+                        id={`remove_${index}`}
+                        type="button"
+                        onClick={() => onFileRemove(index)}
+                      >
+                        {`Remove ${index}`}
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-      </ImageUploading>
+            </div>
+          );
+        }}
+      </FileUploading>
     </div>
   );
 };

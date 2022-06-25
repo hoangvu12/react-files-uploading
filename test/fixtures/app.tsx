@@ -1,66 +1,64 @@
 import * as React from 'react';
-import ImageUploading, { ImageListType } from '../../src';
+import FileUploading from '../../src';
 
 export default (props: Props) => {
-  const [images, setImages] = React.useState([]);
+  const [files, setFiles] = React.useState<File[]>([]);
 
-  const onChange = (imageList) => {
-    setImages(imageList);
+  const onChange = (videoList: File[]) => {
+    setFiles(videoList);
   };
 
   return (
     <div id="app">
-      <ImageUploading value={images} onChange={onChange} {...props}>
+      <FileUploading value={files} onChange={onChange} {...props}>
         {({
-          imageList,
+          fileList,
           errors,
           isDragging,
-          onImageUpload,
-          onImageRemoveAll,
-          onImageUpdate,
-          onImageRemove,
+          onFileUpload,
+          onFileRemoveAll,
+          onFileUpdate,
+          onFileRemove,
           dragProps,
         }) => {
           return (
-            <div className="upload__image-wrapper">
+            <div className="file-wrapper">
               {errors && errors.maxNumber && (
-                <span>Number of selected images exceed maxNumber</span>
+                <span>Number of selected files exceed maxNumber</span>
               )}
 
               <button
                 id="btn-upload"
                 type="button"
                 style={isDragging ? { color: 'red' } : undefined}
-                onClick={onImageUpload}
+                onClick={onFileUpload}
                 {...dragProps}
               >
                 Click or Drop here
               </button>
 
-              <button id="btn-remove" type="button" onClick={onImageRemoveAll}>
-                Remove all images
+              <button id="btn-remove" type="button" onClick={onFileRemoveAll}>
+                Remove all files
               </button>
 
-              <div id="list-images">
-                {imageList.map((image, index) => (
-                  <div key={`image-${image.dataURL}`} className="image-item">
-                    <img
-                      id={`image_${index}`}
-                      src={image.dataURL}
-                      alt="preview"
-                    />
-                    <div className="image-item__btn-wrapper">
+              <div id="list-files">
+                {fileList.map((file, index) => (
+                  <div key={`file-${index}`} className="file-item">
+                    <p data-testid={`file-${index}`} id={`file-${index}`}>
+                      {file.name}
+                    </p>
+                    <div className="file-item__btn-wrapper">
                       <button
                         id={`update_${index}`}
                         type="button"
-                        onClick={() => onImageUpdate(index)}
+                        onClick={() => onFileUpdate(index)}
                       >
                         {`Update ${index}`}
                       </button>
                       <button
                         id={`remove_${index}`}
                         type="button"
-                        onClick={() => onImageRemove(index)}
+                        onClick={() => onFileRemove(index)}
                       >
                         {`Remove ${index}`}
                       </button>
@@ -71,12 +69,12 @@ export default (props: Props) => {
             </div>
           );
         }}
-      </ImageUploading>
+      </FileUploading>
     </div>
   );
 };
 
 type Props = {
-  value?: ImageListType;
+  value?: File[];
   multiple?: boolean;
 };

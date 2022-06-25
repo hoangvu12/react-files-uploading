@@ -1,7 +1,7 @@
 {
-  "name": "react-images-uploading",
-  "version": "3.1.6",
-  "description": "The simple images uploader applied Render Props pattern. This approach allows you to fully control UI component and behaviours.",
+  "name": "react-videos-uploading",
+  "version": "1.0.1",
+  "description": "The simple videos uploader applied Render Props pattern. This approach allows you to fully control UI component and behaviours.",
   "author": {
     "name": "vutoan266",
     "email": "vutoan266@gmail.com",
@@ -17,17 +17,22 @@
       "name": "conandk",
       "email": "ddangkhoa94@gmail.com",
       "url": "https://github.com/conandk"
+    },
+    {
+      "name": "hoangvu12",
+      "email": "hggaming91@gmail.com",
+      "url": "https://github.com/hoangvu12"
     }
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vutoan266/react-images-uploading"
+    "url": "https://github.com/hoangvu12/react-videos-uploading"
   },
   "bugs": {
-    "url": "https://github.com/vutoan266/react-images-uploading/issues"
+    "url": "https://github.com/hoangvu12/react-videos-uploading/issues"
   },
-  "homepage": "https://github.com/vutoan266/react-images-uploading/blob/master/README.md",
+  "homepage": "https://github.com/hoangvu12/react-videos-uploading/blob/master/README.md",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
@@ -108,12 +113,12 @@
   ],
   "keywords": [
     "image",
-    "images",
+    "videos",
     "upload",
     "uploader",
     "uploading",
     "react image upload",
-    "react images uploading",
+    "react videos uploading",
     "drag",
     "drag and drop",
     "image drag and drop",

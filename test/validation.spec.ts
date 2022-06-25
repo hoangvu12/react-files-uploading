@@ -1,23 +1,9 @@
 import {
-  isImageValid,
   isMaxFileSizeValid,
   isAcceptTypeValid,
   isMaxNumberValid,
-  isResolutionValid,
 } from '../src/validation';
 import { DEFAULT_NULL_INDEX } from '../src/constants';
-
-describe('testing isImageValid', () => {
-  it('should return true', () => {
-    const actual = isImageValid('image/png');
-    expect(actual).toBeTruthy();
-  });
-
-  it('should return false', () => {
-    const actual = isImageValid('plain/text');
-    expect(actual).toBeFalsy();
-  });
-});
 
 describe('testing isMaxFileSizeValid', () => {
   it('should return true', () => {
@@ -38,25 +24,25 @@ describe('testing isMaxFileSizeValid', () => {
 describe('testing isAcceptTypeValid', () => {
   it('should return true with null acceptType', () => {
     const acceptType = null;
-    const fileType = 'png';
+    const fileType = 'mp4';
     const actual = isAcceptTypeValid(acceptType, fileType);
     expect(actual).toBeTruthy();
   });
   it('should return true', () => {
-    const acceptType = ['png'];
-    const fileType = 'png';
+    const acceptType = ['mp4'];
+    const fileType = 'mp4';
     const actual = isAcceptTypeValid(acceptType, fileType);
     expect(actual).toBeTruthy();
   });
   it('should return true with case sensitive', () => {
-    const acceptType = ['png'];
-    const fileType = 'PNG';
+    const acceptType = ['mp4'];
+    const fileType = 'MP4';
     const actual = isAcceptTypeValid(acceptType, fileType);
     expect(actual).toBeTruthy();
   });
-  it('should return false', () => {
-    const acceptType = ['jpg'];
-    const fileType = 'png';
+  it('should return false if not match acceptType', () => {
+    const acceptType = ['mp4', 'png', 'txt'];
+    const fileType = 'webm';
     const actual = isAcceptTypeValid(acceptType, fileType);
     expect(actual).toBeFalsy();
   });
@@ -104,112 +90,5 @@ describe('testing isMaxNumberValid', () => {
     const keyUpdate = 0;
     const actual = isMaxNumberValid(totalNumber, maxNumber, keyUpdate);
     expect(actual).toBeTruthy();
-  });
-});
-
-describe('testing isResolutionValid', () => {
-  it('should return true type absolute', () => {
-    const image = { width: 160, height: 160 } as HTMLImageElement;
-    const resolutionType = 'absolute';
-    const resolutionWidth = 160;
-    const resolutionHeight = 160;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeTruthy();
-  });
-  it('should return false type absolute', async () => {
-    const image = { width: 160, height: 160 } as HTMLImageElement;
-    const resolutionType = 'absolute';
-    const resolutionWidth = 170;
-    const resolutionHeight = 160;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeFalsy();
-  });
-  it('should return true type ratio', () => {
-    const image = { width: 320, height: 180 } as HTMLImageElement;
-    const resolutionType = 'ratio';
-    const resolutionWidth = 16;
-    const resolutionHeight = 9;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeTruthy();
-  });
-  it('should return false type ratio', async () => {
-    const image = { width: 160, height: 160 } as HTMLImageElement;
-    const resolutionType = 'ratio';
-    const resolutionWidth = 16;
-    const resolutionHeight = 9;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeFalsy();
-  });
-  it('should return true type less', () => {
-    const image = { width: 150, height: 150 } as HTMLImageElement;
-    const resolutionType = 'less';
-    const resolutionWidth = 160;
-    const resolutionHeight = 160;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeTruthy();
-  });
-  it('should return false type less', async () => {
-    const image = { width: 150, height: 170 } as HTMLImageElement;
-    const resolutionType = 'less';
-    const resolutionWidth = 160;
-    const resolutionHeight = 160;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeFalsy();
-  });
-  it('should return true type more', () => {
-    const image = { width: 170, height: 170 } as HTMLImageElement;
-    const resolutionType = 'more';
-    const resolutionWidth = 160;
-    const resolutionHeight = 160;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeTruthy();
-  });
-  it('should return false type more', async () => {
-    const image = { width: 150, height: 170 } as HTMLImageElement;
-    const resolutionType = 'more';
-    const resolutionWidth = 160;
-    const resolutionHeight = 160;
-    const actual = isResolutionValid(
-      image,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight
-    );
-    return expect(actual).toBeFalsy();
   });
 });

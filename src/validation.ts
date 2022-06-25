@@ -1,54 +1,14 @@
 import { DEFAULT_NULL_INDEX } from './constants';
-import { ResolutionType, ErrorsType } from './typings';
-import { getImage } from './utils';
+import { ErrorsType } from './typings';
 
-export const isResolutionValid = (
-  image: HTMLImageElement,
-  resolutionType: ResolutionType,
-  resolutionWidth: number = 0,
-  resolutionHeight: number = 1
-): boolean => {
-  if (!resolutionWidth || !resolutionHeight || !image.width || !image.height)
-    return true;
-  switch (resolutionType) {
-    case 'absolute': {
-      if (image.width === resolutionWidth && image.height === resolutionHeight)
-        return true;
-      break;
-    }
-    case 'ratio': {
-      const ratio = resolutionWidth / resolutionHeight;
-      if (image.width / image.height === ratio) return true;
-      break;
-    }
-    case 'less': {
-      if (image.width <= resolutionWidth && image.height <= resolutionHeight)
-        return true;
-      break;
-    }
-    case 'more': {
-      if (image.width >= resolutionWidth && image.height >= resolutionHeight)
-        return true;
-      break;
-    }
-    default:
-      break;
-  }
-  return false;
-};
-
-export const isImageValid = (fileType: string) => {
-  if (fileType.includes('image')) {
-    return true;
-  }
-  return false;
-};
-
-export const isMaxFileSizeValid = (fileSize, maxFileSize?) => {
+export const isMaxFileSizeValid = (fileSize: number, maxFileSize?: number) => {
   return maxFileSize ? fileSize <= maxFileSize : true;
 };
 
-export const isAcceptTypeValid = (acceptType, fileName) => {
+export const isAcceptTypeValid = (
+  acceptType: string[] | null,
+  fileName: string
+) => {
   if (acceptType && acceptType.length > 0) {
     const type: string = fileName.split('.').pop() || '';
     if (
@@ -61,59 +21,50 @@ export const isAcceptTypeValid = (acceptType, fileName) => {
   return true;
 };
 
-export const isMaxNumberValid = (totalNumber, maxNumber, keyUpdate) => {
+export const isMaxNumberValid = (
+  totalNumber: number,
+  maxNumber: number | null,
+  keyUpdate: number | null
+) => {
   if (maxNumber !== 0 && !maxNumber) return true;
+
   if (keyUpdate === DEFAULT_NULL_INDEX) {
     if (totalNumber <= maxNumber) return true;
   } else if (totalNumber <= maxNumber + 1) return true;
+
   return false;
 };
 
-export const getErrorValidation = async ({
+export const getErrorValidation = ({
   fileList,
   value,
   maxNumber,
   keyUpdate,
   acceptType,
   maxFileSize,
-  resolutionType,
-  resolutionWidth,
-  resolutionHeight,
-}): Promise<ErrorsType> => {
+}): ErrorsType => {
   const newErrors: ErrorsType = {};
+
   if (!isMaxNumberValid(fileList.length + value.length, maxNumber, keyUpdate)) {
     newErrors.maxNumber = true;
   } else {
     for (let i = 0; i < fileList.length; i += 1) {
       const { file } = fileList[i];
       if (!file) continue;
-      if (!isImageValid(file.type)) {
-        newErrors.acceptType = true;
-        break;
-      }
+
       if (!isAcceptTypeValid(acceptType, file.name)) {
         newErrors.acceptType = true;
         break;
       }
+
       if (!isMaxFileSizeValid(file.size, maxFileSize)) {
         newErrors.maxFileSize = true;
         break;
       }
-      if (resolutionType) {
-        const image = await getImage(file);
-        const checkRes = isResolutionValid(
-          image,
-          resolutionType,
-          resolutionWidth,
-          resolutionHeight
-        );
-        if (!checkRes) {
-          newErrors.resolution = true;
-          break;
-        }
-      }
     }
   }
+
   if (Object.values(newErrors).find(Boolean)) return newErrors;
+
   return null;
 };

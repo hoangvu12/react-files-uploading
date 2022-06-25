@@ -1,32 +1,18 @@
 import React, { useRef, useState, useCallback, useMemo } from 'react';
-import { openFileDialog, getListFiles, getAcceptTypeString } from './utils';
+import { openFileDialog, getAcceptTypeString } from './utils';
 import { getErrorValidation } from './validation';
-import {
-  ImageType,
-  ImageListType,
-  ImageUploadingPropsType,
-  ErrorsType,
-  ResolutionType,
-} from './typings';
-import {
-  DEFAULT_NULL_INDEX,
-  INIT_MAX_NUMBER,
-  DEFAULT_DATA_URL_KEY,
-} from './constants';
+import { FileUploadingPropsType, ErrorsType } from './typings';
+import { DEFAULT_NULL_INDEX, INIT_MAX_NUMBER } from './constants';
 
-const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
+const ReactFileUploading: React.FC<FileUploadingPropsType> = ({
   value = [],
   onChange,
   onError,
   children,
-  dataURLKey = DEFAULT_DATA_URL_KEY,
   multiple = false,
   maxNumber = INIT_MAX_NUMBER,
   acceptType,
   maxFileSize,
-  resolutionWidth,
-  resolutionHeight,
-  resolutionType,
   inputProps = {},
 }) => {
   const inValue = value || [];
@@ -35,20 +21,21 @@ const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
   const [errors, setErrors] = useState<ErrorsType>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  const handleClickInput = useCallback(() => openFileDialog(inputRef), [
-    inputRef,
-  ]);
+  const handleClickInput = useCallback(
+    () => openFileDialog(inputRef),
+    [inputRef]
+  );
 
-  const onImageUpload = useCallback((): void => {
+  const onFileUpload = useCallback((): void => {
     setKeyUpdate(DEFAULT_NULL_INDEX);
     handleClickInput();
   }, [handleClickInput]);
 
-  const onImageRemoveAll = useCallback((): void => {
+  const onFileRemoveAll = useCallback((): void => {
     onChange?.([]);
   }, [onChange]);
 
-  const onImageRemove = (index: number | Array<number>): void => {
+  const onFileRemove = (index: number | Array<number>): void => {
     const updatedList = [...inValue];
     if (Array.isArray(index)) {
       index.forEach((i) => {
@@ -60,42 +47,47 @@ const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
     onChange?.(updatedList);
   };
 
-  const onImageUpdate = (index: number): void => {
+  const onFileUpdate = (index: number): void => {
     setKeyUpdate(index);
     handleClickInput();
   };
 
-  const validate = async (fileList: ImageListType): Promise<boolean> => {
-    const errorsValidation = await getErrorValidation({
+  const validate = async (fileList: File[]): Promise<boolean> => {
+    const errorsValidation = getErrorValidation({
       fileList,
       maxFileSize,
       maxNumber,
       acceptType,
       keyUpdate,
-      resolutionType,
-      resolutionWidth,
-      resolutionHeight,
       value: inValue,
     });
+
     if (errorsValidation) {
       setErrors(errorsValidation);
       onError?.(errorsValidation, fileList);
       return false;
     }
+
     errors && setErrors(null);
+
     return true;
   };
 
   const handleChange = async (files: FileList | null) => {
-    if (!files) return;
-    const fileList = await getListFiles(files, dataURLKey);
-    if (!fileList.length) return;
-    const checkValidate = await validate(fileList);
-    if (!checkValidate) return;
-    let updatedFileList: ImageListType;
+    if (!files?.length) return;
+
+    const fileList = Array.from(files);
+
+    const isValidate = await validate(fileList);
+
+    if (!isValidate) return;
+
+    let updatedFileList: File[] = [];
+
     const updatedIndexes: number[] = [];
+
     if (keyUpdate > DEFAULT_NULL_INDEX) {
-      const [firstFile] = fileList;
+      const firstFile = files[0];
       updatedFileList = [...inValue];
       updatedFileList[keyUpdate] = firstFile;
       updatedIndexes.push(keyUpdate);
@@ -112,6 +104,7 @@ const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
       updatedFileList = [fileList[0]];
       updatedIndexes.push(0);
     }
+
     onChange?.(updatedFileList, updatedIndexes);
   };
 
@@ -123,9 +116,10 @@ const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
     if (inputRef.current) inputRef.current.value = '';
   };
 
-  const acceptTypeString = useMemo(() => getAcceptTypeString(acceptType), [
-    acceptType,
-  ]);
+  const acceptTypeString = useMemo(
+    () => getAcceptTypeString(acceptType),
+    [acceptType]
+  );
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -173,18 +167,18 @@ const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
         {...inputProps}
       />
       {children?.({
-        imageList: inValue,
-        onImageUpload,
-        onImageRemoveAll,
-        onImageUpdate,
-        onImageRemove,
+        fileList: inValue,
+        onFileUpload,
+        onFileRemoveAll,
+        onFileUpdate,
+        onFileRemove,
         errors,
         dragProps: {
           onDrop: handleDrop,
           onDragEnter: handleDragIn,
           onDragLeave: handleDragOut,
           onDragOver: handleDrag,
-          onDragStart:handleDragStart,
+          onDragStart: handleDragStart,
         },
         isDragging,
       })}
@@ -192,12 +186,6 @@ const ReactImageUploading: React.FC<ImageUploadingPropsType> = ({
   );
 };
 
-export default ReactImageUploading;
+export default ReactFileUploading;
 
-export {
-  ImageType,
-  ImageListType,
-  ImageUploadingPropsType,
-  ErrorsType,
-  ResolutionType,
-};
+export { FileUploadingPropsType, ErrorsType };
