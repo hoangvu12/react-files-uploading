@@ -83,7 +83,7 @@ describe('testing ReactImageUploading component', () => {
     expect(textFileName).toMatchSnapshot('test_text');
   });
 
-  it('should remove all videos', async () => {
+  it('should remove all files', async () => {
     const { queryByTestId, getByText } = render(<App />);
 
     fireEvent.click(getByText(/Click or Drop here/));
@@ -100,11 +100,11 @@ describe('testing ReactImageUploading component', () => {
 
     await waitFor(() => queryByTestId('file-0'));
 
-    fireEvent.click(getByText(/Remove all videos/));
+    fireEvent.click(getByText(/Remove all files/));
     expect(queryByTestId('file-0')).toBeNull();
   });
 
-  it('should remove specific video', async () => {
+  it('should remove specific file', async () => {
     const { queryByTestId, getByText } = render(<App />);
 
     fireEvent.click(getByText(/Click or Drop here/));

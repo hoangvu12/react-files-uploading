@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing empty case should render component 1`] = `
+<div>
+  <div
+    id="app"
+  >
+    <input
+      accept="*/*"
+      style="display: none;"
+      type="file"
+    />
+    <div
+      class="file-wrapper"
+    >
+      <button
+        id="btn-upload"
+        type="button"
+      >
+        Click or Drop here
+      </button>
+      <button
+        id="btn-remove"
+        type="button"
+      >
+        Remove all files
+      </button>
+      <div
+        id="list-files"
+      />
+    </div>
+  </div>
+</div>
+`;

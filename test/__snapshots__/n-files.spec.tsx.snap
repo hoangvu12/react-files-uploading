@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing initial list of n videos should render component 1`] = `
+<div>
+  <div
+    id="app"
+  >
+    <input
+      accept="*/*"
+      style="display: none;"
+      type="file"
+    />
+    <div
+      class="file-wrapper"
+    >
+      <button
+        id="btn-upload"
+        type="button"
+      >
+        Click or Drop here
+      </button>
+      <button
+        id="btn-remove"
+        type="button"
+      >
+        Remove all files
+      </button>
+      <div
+        id="list-files"
+      >
+        <div
+          class="file-item"
+        >
+          <p
+            data-testid="file-0"
+            id="file-0"
+          >
+            video-1-name
+          </p>
+          <div
+            class="file-item__btn-wrapper"
+          >
+            <button
+              id="update_0"
+              type="button"
+            >
+              Update 0
+            </button>
+            <button
+              id="remove_0"
+              type="button"
+            >
+              Remove 0
+            </button>
+          </div>
+        </div>
+        <div
+          class="file-item"
+        >
+          <p
+            data-testid="file-1"
+            id="file-1"
+          >
+            video-2-name
+          </p>
+          <div
+            class="file-item__btn-wrapper"
+          >
+            <button
+              id="update_1"
+              type="button"
+            >
+              Update 1
+            </button>
+            <button
+              id="remove_1"
+              type="button"
+            >
+              Remove 1
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

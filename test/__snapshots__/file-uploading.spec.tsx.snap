@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing ReactImageUploading component should upload a file: test_video 1`] = `undefined`;
+
+exports[`testing ReactImageUploading component should upload multiple files: test_image 1`] = `undefined`;
+
+exports[`testing ReactImageUploading component should upload multiple files: test_text 1`] = `undefined`;
+
+exports[`testing ReactImageUploading component should upload multiple files: test_video 1`] = `undefined`;
