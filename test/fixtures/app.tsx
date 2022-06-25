@@ -4,8 +4,8 @@ import FileUploading from '../../src';
 export default (props: Props) => {
   const [files, setFiles] = React.useState<File[]>([]);
 
-  const onChange = (videoList: File[]) => {
-    setFiles(videoList);
+  const onChange = (fileList: File[]) => {
+    setFiles(fileList);
   };
 
   return (

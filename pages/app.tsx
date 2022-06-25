@@ -4,8 +4,8 @@ import FileUploading from '../src';
 export const App = () => {
   const [files, setFiles] = React.useState<File[]>([]);
 
-  const onChange = (videoList: File[]) => {
-    setFiles(videoList);
+  const onChange = (fileList: File[]) => {
+    setFiles(fileList);
   };
 
   return (
@@ -24,7 +24,7 @@ export const App = () => {
           return (
             <div className="upload__file-wrapper">
               {errors && errors.maxNumber && (
-                <span>Number of selected videos exceed maxNumber</span>
+                <span>Number of selected files exceed maxNumber</span>
               )}
 
               <button
@@ -38,10 +38,10 @@ export const App = () => {
               </button>
 
               <button id="btn-remove" type="button" onClick={onFileRemoveAll}>
-                Remove all videos
+                Remove all files
               </button>
 
-              <div id="list-videos">
+              <div id="list-files">
                 {fileList.map((file, index) => (
                   <div key={`file-${index}`} className="file-item">
                     <p>{file.name}</p>

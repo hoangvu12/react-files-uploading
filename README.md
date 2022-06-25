@@ -1,16 +1,16 @@
-# react-videos-uploading
+# react-files-uploading
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/6290720/91559755-9d6e8c00-e973-11ea-9bde-4b60c89f441a.png" width="250" />
 </div>
 
-The simple videos uploader applied `Render Props` pattern. (You can read more about this pattern [here](https://reactjs.org/docs/render-props.html)).
+The simple files uploader applied `Render Props` pattern. (You can read more about this pattern [here](https://reactjs.org/docs/render-props.html)).
 
 This approach allows you to fully control UI component and behaviours.
 
-_This is a modified version of [react-images-uploading](https://github.com/vutoan266/react-images-uploading) for videos uploading._
+_This is a modified version of [react-images-uploading](https://github.com/vutoan266/react-images-uploading) for files uploading._
 
-[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) ![Github_Actions](https://github.com/hoangvu12/react-videos-uploading/workflows/CI/CD/badge.svg) [![NPM](https://img.shields.io/npm/v/react-videos-uploading.svg)](https://www.npmjs.com/package/react-videos-uploading) [![NPM](https://img.shields.io/npm/dm/react-videos-uploading.svg)](https://www.npmjs.com/package/react-videos-uploading) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hoangvu12/react-videos-uploading/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/hoangvu12/react-videos-uploading/pulls) [![Package Quality](https://npm.packagequality.com/shield/react-videos-uploading.svg)](https://packagequality.com/#?package=react-videos-uploading) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) ![Github_Actions](https://github.com/hoangvu12/react-files-uploading/workflows/CI/CD/badge.svg) [![NPM](https://img.shields.io/npm/v/react-files-uploading.svg)](https://www.npmjs.com/package/react-files-uploading) [![NPM](https://img.shields.io/npm/dm/react-files-uploading.svg)](https://www.npmjs.com/package/react-files-uploading) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hoangvu12/react-files-uploading/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/hoangvu12/react-files-uploading/pulls) [![Package Quality](https://npm.packagequality.com/shield/react-files-uploading.svg)](https://packagequality.com/#?package=react-files-uploading) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
@@ -18,7 +18,7 @@ _This is a modified version of [react-images-uploading](https://github.com/vutoa
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[![Package Quality](https://npm.packagequality.com/badge/react-videos-uploading.png)](https://packagequality.com/#?package=react-videos-uploading)
+[![Package Quality](https://npm.packagequality.com/badge/react-files-uploading.png)](https://packagequality.com/#?package=react-files-uploading)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -37,79 +37,77 @@ _This is a modified version of [react-images-uploading](https://github.com/vutoa
 **npm**
 
 ```bash
-npm install --save react-videos-uploading
+npm install --save react-files-uploading
 ```
 
 **yarn**
 
 ```bash
-yarn add react-videos-uploading
+yarn add react-files-uploading
 ```
 
 **Basic**
 
 ```tsx
-import React from 'react';
-import VideoUploading from 'react-videos-uploading';
+import * as React from 'react';
+import FileUploading from 'react-files-uploading';
 
-export function App() {
-  const [videos, setVideos] = React.useState<File[]>([]);
+export const App = () => {
+  const [files, setFiles] = React.useState<File[]>([]);
 
-  const onChange = (videoList: File[]) => {
-    setVideos(videoList);
+  const onChange = (fileList: File[]) => {
+    setFiles(fileList);
   };
 
   return (
-    <div id="app">
-      <VideoUploading value={videos} onChange={onChange} {...props}>
+    <div className="App">
+      <FileUploading multiple value={files} maxNumber={10} onChange={onChange}>
         {({
-          videoList,
+          fileList,
           errors,
           isDragging,
-          onVideoUpload,
-          onVideoRemoveAll,
-          onVideoUpdate,
-          onVideoRemove,
+          onFileUpload,
+          onFileRemoveAll,
+          onFileUpdate,
+          onFileRemove,
           dragProps,
         }) => {
           return (
-            <div className="upload__video-wrapper">
+            <div className="upload__file-wrapper">
               {errors && errors.maxNumber && (
-                <span>Number of selected videos exceed maxNumber</span>
+                <span>Number of selected files exceed maxNumber</span>
               )}
 
               <button
                 id="btn-upload"
                 type="button"
                 style={isDragging ? { color: 'red' } : undefined}
-                onClick={onVideoUpload}
+                onClick={onFileUpload}
                 {...dragProps}
               >
                 Click or Drop here
               </button>
 
-              <button id="btn-remove" type="button" onClick={onVideoRemoveAll}>
-                Remove all videos
+              <button id="btn-remove" type="button" onClick={onFileRemoveAll}>
+                Remove all files
               </button>
 
-              <div id="list-videos">
-                {videoList.map((video, index) => (
-                  <div key={`video-${index}`} className="video-item">
-                    <p data-testid={`video-${index}`} id={`video-${index}`}>
-                      {video.name}
-                    </p>
-                    <div className="video-item__btn-wrapper">
+              <div id="list-files">
+                {fileList.map((file, index) => (
+                  <div key={`file-${index}`} className="file-item">
+                    <p>{file.name}</p>
+                    <div className="file-item__btn-wrapper">
                       <button
                         id={`update_${index}`}
                         type="button"
-                        onClick={() => onVideoUpdate(index)}
+                        onClick={() => onFileUpdate(index)}
                       >
                         {`Update ${index}`}
                       </button>
                       <button
                         id={`remove_${index}`}
                         type="button"
-                        onClick={() => onVideoRemove(index)}
+                        onClick={() => onFileRemove(index)}
                       >
                         {`Remove ${index}`}
                       </button>
@@ -120,19 +118,19 @@ export function App() {
             </div>
           );
         }}
-      </VideoUploading>
+      </FileUploading>
     </div>
   );
-}
+};
 ```
 
 **Validation**
 
 ```ts
 ...
-  {({ videoList, onVideoUpload, onVideoRemoveAll, errors }) => (
+  {({ fileList, onFileUpload, onFileRemoveAll, errors }) => (
     errors && <div>
-      {errors.maxNumber && <span>Number of selected videos exceed maxNumber</span>}
+      {errors.maxNumber && <span>Number of selected files exceed maxNumber</span>}
       {errors.acceptType && <span>Your selected file type is not allow</span>}
       {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
     </div>
@@ -144,10 +142,10 @@ export function App() {
 
 ```tsx
 ...
-  {({ videoList, dragProps, isDragging }) => (
+  {({ fileList, dragProps, isDragging }) => (
     <div {...dragProps}>
       {isDragging ? "Drop here please" : "Upload space"}
-      {videoList.map((file, index) => (
+      {fileList.map((file, index) => (
         <p>{file.name}</p>
       ))}
     </div>
@@ -157,29 +155,29 @@ export function App() {
 
 ## Props
 
-| parameter   | type                                | options                             | default | description                                           |
-| ----------- | ----------------------------------- | ----------------------------------- | ------- | ----------------------------------------------------- |
-| value       | array                               |                                     | []      | List of videos                                        |
-| onChange    | function                            | (videoList, addUpdateIndex) => void |         | Called when add, update or delete action is called    |
-| multiple    | boolean                             |                                     | false   | Set `true` for multiple chooses                       |
-| maxNumber   | number                              |                                     | 1000    | Number of videos user can select if mode = `multiple` |
-| onError     | function                            | (errors, files) => void             |         | Called when it has errors                             |
-| acceptType  | array                               | ['mp4', 'webm', 'vob']              | []      | The file extension(s) to upload                       |
-| maxFileSize | number                              |                                     |         | Max video size (Byte) and it is used in validation    |
-| inputProps  | React.HTMLProps\<HTMLInputElement\> |                                     |         |                                                       |
+| parameter   | type                                | options                            | default | description                                          |
+| ----------- | ----------------------------------- | ---------------------------------- | ------- | ---------------------------------------------------- |
+| value       | array                               |                                    | []      | List of files                                        |
+| onChange    | function                            | (fileList, addUpdateIndex) => void |         | Called when add, update or delete action is called   |
+| multiple    | boolean                             |                                    | false   | Set `true` for multiple chooses                      |
+| maxNumber   | number                              |                                    | 1000    | Number of files user can select if mode = `multiple` |
+| onError     | function                            | (errors, files) => void            |         | Called when it has errors                            |
+| acceptType  | array                               | ['mp4', 'webm', 'png', 'pdf]       | []      | The file extension(s) to upload                      |
+| maxFileSize | number                              |                                    |         | Max file size (Byte) and it is used in validation    |
+| inputProps  | React.HTMLProps\<HTMLInputElement\> |                                    |         |                                                      |
 
 ## Exported options
 
-| parameter        | type                                      | description                                                         |
-| :--------------- | :---------------------------------------- | :------------------------------------------------------------------ |
-| videoList        | array                                     | List of videos to render.                                           |
-| onVideoUpload    | function                                  | Called when an element is clicks and triggers to open a file dialog |
-| onVideoRemoveAll | function                                  | Called when removing all videos                                     |
-| onVideoUpdate    | (updateIndex: number) => void             | Called when updating an video at `updateIndex`.                     |
-| onVideoRemove    | (deleteIndex: number \| number[]) => void | Called when removing one or list video.                             |
-| errors           | object                                    | Exported object of validation                                       |
-| dragProps        | object                                    | Native element props for drag and drop feature                      |
-| isDragging       | boolean                                   | "true" if an video is being dragged                                 |
+| parameter       | type                                      | description                                                         |
+| :-------------- | :---------------------------------------- | :------------------------------------------------------------------ |
+| fileList        | array                                     | List of files to render.                                            |
+| onFileUpload    | function                                  | Called when an element is clicks and triggers to open a file dialog |
+| onFileRemoveAll | function                                  | Called when removing all files                                      |
+| onFileUpdate    | (updateIndex: number) => void             | Called when updating a file at `updateIndex`.                       |
+| onFileRemove    | (deleteIndex: number \| number[]) => void | Called when removing one or list of files.                          |
+| errors          | object                                    | Exported object of validation                                       |
+| dragProps       | object                                    | Native element props for drag and drop feature                      |
+| isDragging      | boolean                                   | "true" if a file is being dragged                                   |
 
 ## Contributors ✨
 
